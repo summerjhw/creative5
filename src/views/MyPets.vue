@@ -20,7 +20,6 @@
     
 <script>
 import PetDisplay from "@/components/PetDisplay.vue";
-import axios from "axios";
 export default {
   name: "MyPets",
   components: {

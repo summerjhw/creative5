@@ -117,7 +117,7 @@ export default {
       );
     },
     user() {
-      let user = this.$store.state.user;
+      //let user = this.$store.state.user;
       return this.$store.state.user;
     }
   },
@@ -196,6 +196,7 @@ export default {
         let response = axios.delete("/api/pets/" + pet._id);
         this.clear();
         this.getPets();
+        console.log(response);
         return true;
       } catch (error) {
         console.log(error);
@@ -226,6 +227,7 @@ export default {
           attributes: attr,
           adopted: false
         });
+        console.log(response);
         this.clear();
         this.getPets();
         return true;
