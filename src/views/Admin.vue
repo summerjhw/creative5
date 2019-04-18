@@ -2,6 +2,11 @@
   <div id="admin" class="content">
     <div v-if="user">
       <h1>Mythical Pet Adoption: Admin</h1>
+       <div class="logout">
+        <a href="#" @click="logout">
+              Logout
+        </a>
+      </div>
       <div class="heading">
         <h2>New Pet Profile</h2>
       </div>
@@ -182,7 +187,7 @@ export default {
     },
 
     async getPets() {
-      await this.$store.dispatch("getAllPets");
+      //await this.$store.dispatch("getAllPets");
       this.allPets = this.$store.state.pets;
     },
 
@@ -227,13 +232,26 @@ export default {
       } catch (error) {
         console.log(error);
       }
-    }
+    },
+      async logout() {
+      try {
+        this.error = await this.$store.dispatch("logout");
+      } catch (error) {
+        console.log(error); 
+      }
+    },
   }
 };
 
 </script>
 
 <style>
+
+.logout {
+  text-align:right;
+  margin:1em;
+}
+
 .add,
 .edit {
   display: flex;

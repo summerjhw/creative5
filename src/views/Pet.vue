@@ -9,12 +9,14 @@
       <div v-if="pet.user">
         <p>{{pet.user.name}}'s Pet</p>
       </div>
-      <div v-if="user != null">
-        <div v-if="user.name === pet.user.name">
-          <p>Congratulations! You adopted {{pet.name}}</p>
-        </div>
-        <div v-else-if="pet.user">
-          <p>{{pet.user.name}} adopted {{pet.name}}</p>
+      <div v-if="user">
+        <div v-if="owner != null">
+          <div v-if="user.name === pet.user.name">
+            <p>Congratulations! You adopted {{pet.name}}</p>
+          </div>
+          <div v-else-if="pet.user">
+            <p>{{pet.user.name}} adopted {{pet.name}}</p>
+          </div>
         </div>
         <div v-else>
           <button type="adopt" @click="adopt" class="pure-button pure-button-secondary">Adopt!</button>
@@ -33,30 +35,19 @@ export default {
   name: "pet",
   data() {
     return {
-      enabled: true
+      enabled: true,
+      pet: null,
+      user: null,
+      owner: null
     };
   },
 
   created() {
-    this.$store.dispatch("getAllPets");
-    this.$store.dispatch("getUser");
-  },
-
-  computed: {
-    pet() {
-      let id = this.$route.params.id;
-      let allPets = this.$store.state.allPets;
-      for (let i = 0; i < allPets.length; i++) {
-        if (allPets[i]._id === id) {
-          return allPets[i];
-        }
-      }
-      return null;
-    },
-
-    user() {
-      return this.$store.state.user;
+    if (this.$store.state.user == null) {
+      this.$store.dispatch("getUser");
     }
+    this.user = this.$store.state.user;
+    this.getPet();
   },
 
   methods: {
@@ -64,15 +55,29 @@ export default {
       try {
         this.enabled = false;
         let response = await axios.put("/api/pets/adopt/" + this.pet._id, {
-          user: this.user,
+          user: this.user
         });
         console.log(response);
-        this.getPets();
-        this.$store.dispatch("getAllPets");
+        this.getPet();
+        
       } catch (error) {
         console.log(error);
       }
-    }
+    },
+
+    getPet() {
+     
+      this.$store.dispatch("getAllPets");
+  
+      let id = this.$route.params.id;
+      let allPets = this.$store.state.allPets;
+      for (let i = 0; i < allPets.length; i++) {
+        if (allPets[i]._id === id) {
+          this.pet = allPets[i];
+          this.owner = this.pet.user;
+        }
+      }
+    },
   }
 };
 </script>

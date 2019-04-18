@@ -22,11 +22,24 @@
   <div class="content">
     <router-view />
   </div>
+  <div class="footer">
+    <a href="https://github.com/summerjhw/creative5"> GitHub Repository</a>
+  </div>
 </div>
 </template>
 
 
 <style>
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color:#64fa9b9e;
+    color: rgb(250, 6, 6);
+    text-align: center;
+  }
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

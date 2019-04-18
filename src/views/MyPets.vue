@@ -1,6 +1,12 @@
 <template>
   <div id="MyPets">
     <div v-if="user">
+      <div class="logout">
+        <a href="#" @click="logout">
+              Logout
+        </a>
+      </div>
+        
       <h1>{{user.name}}'s Pets</h1>
       <pet-display :pets="pets"/>
     </div>
@@ -28,7 +34,9 @@ export default {
   },
 
   async created() {
+    if(this.$store.state.user === null){
     await this.$store.dispatch("getUser");
+    }
     // await this.$store.dispatch("getMyPets");
     this.getPets();
   },
@@ -64,7 +72,23 @@ export default {
       console.log(error);
     }
       // this.pets = allPets.filter(pet => (pet.user != null) && (pet.user.name === this.user.name));
-    }
+    },
+
+      async logout() {
+      try {
+        this.error = await this.$store.dispatch("logout");
+      } catch (error) {
+        console.log(error); 
+      }
+    },
   }
 };
 </script>
+
+<style>
+
+.logout {
+  text-align:right;
+  margin:1em;
+}
+</style>
